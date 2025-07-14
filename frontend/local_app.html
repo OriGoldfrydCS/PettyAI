@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PettyAI - Pet Adoption Prediction</title>
+    <link rel="stylesheet" href="assets/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+    <div class="container">
+        <!-- Navigation Header -->
+        <header class="header">
+            <div class="nav-container">
+                <div class="logo">
+                    <i class="fas fa-paw"></i>
+                    <span>PettyAI</span>
+                </div>
+                <nav class="nav-links">
+                    <a href="#dashboard" class="nav-link active">Dashboard</a>
+                    <a href="#add-pet" class="nav-link">Add Pet</a>
+                </nav>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Dashboard Section -->
+            <section id="dashboard" class="section dashboard-section">
+                <div class="dashboard-header">
+                    <h1>Dashboard</h1>
+                    <p>Monitor pet adoption predictions and insights with PettyAI</p>
+                    <button class="btn btn-primary" onclick="showAddPetForm()">
+                        <i class="fas fa-plus"></i>
+                        Add New Pet
+                    </button>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon heart">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="total-pets">0</h3>
+                            <p>Total Pets</p>
+                            <span class="stat-subtitle" id="pets-in-system">0 pets in system</span>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon clock">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="avg-prediction">-- days</h3>
+                            <p>Avg. Prediction</p>
+                            <span class="stat-subtitle">Average adoption time</span>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon trending">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="fast-adopters">0</h3>
+                            <p>Fast Adopters</p>
+                            <span class="stat-subtitle" id="fast-prediction">≤ 14 days predicted</span>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon confidence">
+                            <i class="fas fa-target"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="avg-confidence">--%</h3>
+                            <p>Avg. Confidence</p>
+                            <span class="stat-subtitle">Prediction accuracy</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="recent-pets">
+                    <div class="section-header">
+                        <h2>Recent Pets</h2>
+                        <div class="dashboard-actions">
+                            <button class="export-csv-btn" onclick="exportAllToCSV()" title="Export all pets to CSV">
+                                <i class="fas fa-download"></i> Export CSV
+                            </button>
+                            <a href="#" class="view-all-link">View All</a>
+                        </div>
+                    </div>
+                    <div class="pets-grid" id="recent-pets-grid">
+                        <!-- Recent pets will be dynamically populated here -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Add Pet Form Section -->
+            <section id="add-pet" class="section add-pet-section" style="display: none;">
+                <div class="form-header">
+                    <h1>Add New Pet Profile</h1>
+                    <p>Help us predict how quickly this pet will find their forever home</p>
+                </div>
+
+                <!-- Progress Indicator -->
+                <div class="progress-container">
+                    <div class="progress-info">
+                        <span class="step-indicator">Step <span id="current-step">1</span> of 6</span>
+                        <span class="completion-indicator">
+                            <span id="completion-percentage">17%</span> Complete
+                        </span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progress-fill"></div>
+                    </div>
+                    <div class="progress-steps">
+                        <div class="step active" data-step="1">
+                            <span class="step-number">1</span>
+                            <span class="step-label">Basic Info</span>
+                        </div>
+                        <div class="step" data-step="2">
+                            <span class="step-number">2</span>
+                            <span class="step-label">Physical</span>
+                        </div>
+                        <div class="step" data-step="3">
+                            <span class="step-number">3</span>
+                            <span class="step-label">Health</span>
+                        </div>
+                        <div class="step" data-step="4">
+                            <span class="step-number">4</span>
+                            <span class="step-label">Location</span>
+                        </div>
+                        <div class="step" data-step="5">
+                            <span class="step-number">5</span>
+                            <span class="step-label">Description</span>
+                        </div>
+                        <div class="step" data-step="6">
+                            <span class="step-number">6</span>
+                            <span class="step-label">Photos</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Form Steps -->
+                <form id="pet-form" class="pet-form">
+                    <!-- Step 1: Basic Information -->
+                    <div class="form-step active" id="step-1">
+                        <div class="step-content">
+                            <div class="step-header">
+                                <i class="fas fa-info-circle"></i>
+                                <h2>Basic Information</h2>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="pet-type">Please select the type of animal: *</label>
+                                <select id="pet-type" name="type" required>
+                                    <option value="">Select animal type</option>
+                                    <option value="1">Dog</option>
+                                    <option value="2">Cat</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="pet-name">Please enter the pet's name (leave empty if unnamed):</label>
+                                <input type="text" id="pet-name" name="name" placeholder="Enter pet's name">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="pet-age">Please enter the pet's age in months when listed: *</label>
+                                <input type="number" id="pet-age" name="age" placeholder="Age in months" min="0"
+                                    required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="pet-quantity">Please enter the number of pets in this profile: *</label>
+                                <input type="number" id="pet-quantity" name="quantity" placeholder="Number of pets"
+                                    min="1" value="1" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="adoption-fee">Please enter the adoption fee (enter 0 if free): *</label>
+                                <div class="input-with-prefix">
+                                    <span class="input-prefix">$</span>
+                                    <input type="number" id="adoption-fee" name="fee" placeholder="0.00" min="0"
+                                        step="0.01" required>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 2: Physical Characteristics -->
+                    <div class="form-step" id="step-2">
+                        <div class="step-content">
+                            <div class="step-header">
+                                <i class="fas fa-dna"></i>
+                                <h2>Physical Characteristics</h2>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="pet-breed">Please select the pet's breed from the options below:
+                                    *</label>
+                                <select id="pet-breed" name="breed" required>
+                                    <option value="">Select breed</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="pet-gender">Please select the pet's gender: *</label>
+                                <select id="pet-gender" name="gender" required>
+                                    <option value="">Select gender</option>
+                                    <option value="1">Male</option>
+                                    <option value="2">Female</option>
+                                    <option value="3">Mixed (for groups)</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="pet-color">Please select the pet's primary color from the options below:
+                                    *</label>
+                                <select id="pet-color" name="color" required>
+                                    <option value="">Select color</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="pet-size">Please select the expected size of the pet when fully grown:
+                                    *</label>
+                                <select id="pet-size" name="maturitySize" required>
+                                    <option value="">Select size</option>
+                                    <option value="1">Small</option>
+                                    <option value="2">Medium</option>
+                                    <option value="3">Large</option>
+                                    <option value="4">Extra Large</option>
+                                    <option value="0">Unknown</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="fur-length">Please select the length of the pet's fur: *</label>
+                                <select id="fur-length" name="furLength" required>
+                                    <option value="">Select fur length</option>
+                                    <option value="1">Short</option>
+                                    <option value="2">Medium</option>
+                                    <option value="3">Long</option>
+                                    <option value="0">Unknown</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 3: Health Information -->
+                    <div class="form-step" id="step-3">
+                        <div class="step-content">
+                            <div class="step-header">
+                                <i class="fas fa-heart-pulse"></i>
+                                <h2>Health Information</h2>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="vaccinated">Please indicate if the pet is vaccinated: *</label>
+                                <select id="vaccinated" name="vaccinated" required>
+                                    <option value="">Select vaccination status</option>
+                                    <option value="1">Yes</option>
+                                    <option value="2">No</option>
+                                    <option value="3">Not Sure</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="dewormed">Please indicate if the pet has been dewormed: *</label>
+                                <select id="dewormed" name="dewormed" required>
+                                    <option value="">Select deworming status</option>
+                                    <option value="1">Yes</option>
+                                    <option value="2">No</option>
+                                    <option value="3">Not Sure</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="sterilized">Please indicate if the pet has been sterilized: *</label>
+                                <select id="sterilized" name="sterilized" required>
+                                    <option value="">Select sterilization status</option>
+                                    <option value="1">Yes</option>
+                                    <option value="2">No</option>
+                                    <option value="3">Not Sure</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="health">Please select the pet's health status: *</label>
+                                <select id="health" name="health" required>
+                                    <option value="">Select health status</option>
+                                    <option value="1">Healthy</option>
+                                    <option value="2">Minor Injury</option>
+                                    <option value="3">Serious Injury</option>
+                                    <option value="0">Unknown</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 4: Location Information -->
+                    <div class="form-step" id="step-4">
+                        <div class="step-content">
+                            <div class="step-header">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <h2>Location Information</h2>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="pet-state">Please select the Malaysian state where the pet is located:
+                                    *</label>
+                                <select id="pet-state" name="state" required>
+                                    <option value="">Select state</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 5: Pet Description -->
+                    <div class="form-step" id="step-5">
+                        <div class="step-content">
+                            <div class="step-header">
+                                <i class="fas fa-file-text"></i>
+                                <h2>Pet Description</h2>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="pet-description">Please provide a detailed description of the pet (e.g.,
+                                    personality, habits, special needs):</label>
+                                <textarea id="pet-description" name="description" rows="6"
+                                    placeholder="Tell us about this pet's personality, behavior, special needs, or any other important information that would help potential adopters..."></textarea>
+                                <small class="form-help">A detailed description helps potential adopters understand
+                                    the
+                                    pet's needs and personality.</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 6: Pet Photos -->
+                    <div class="form-step" id="step-6">
+                        <div class="step-content">
+                            <div class="step-header">
+                                <i class="fas fa-camera"></i>
+                                <h2>Pet Photos</h2>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Please upload photos of the pet. Multiple images are encouraged.</label>
+                                <div class="photo-upload-area" id="photo-upload-area">
+                                    <div class="upload-icon">
+                                        <i class="fas fa-cloud-upload-alt"></i>
+                                    </div>
+                                    <div class="upload-text">
+                                        <p>Drag and drop images here</p>
+                                        <p class="upload-subtext">or click to select files</p>
+                                    </div>
+                                    <input type="file" id="photo-input" name="photos" multiple accept="image/*"
+                                        style="display: none;">
+                                    <button type="button" class="btn btn-secondary"
+                                        onclick="document.getElementById('photo-input').click()">
+                                        Select Photos
+                                    </button>
+                                </div>
+                                <div class="photo-preview" id="photo-preview"></div>
+                                <div class="upload-warning" id="upload-warning" style="display: none;">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                    <p><strong>Warning:</strong> No images have been uploaded. This may lead to
+                                        lower
+                                        accuracy in the adoption prediction model. A placeholder image will be used
+                                        for
+                                        analysis.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Form Navigation -->
+                    <div class="form-navigation">
+                        <button type="button" class="btn btn-secondary" id="prev-btn" onclick="previousStep()"
+                            style="display: none;">
+                            <i class="fas fa-chevron-left"></i>
+                            Previous
+                        </button>
+
+                        <div class="nav-spacer"></div>
+
+                        <button type="button" class="btn btn-primary" id="next-btn" onclick="nextStep()">
+                            Next
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+
+                        <button type="button" class="btn btn-success" id="predict-btn" onclick="generatePrediction()"
+                            style="display: none;">
+                            <i class="fas fa-magic"></i>
+                            Ready to generate prediction!
+                        </button>
+
+                        <button type="submit" class="btn btn-success" id="submit-btn" style="display: none;">
+                            <i class="fas fa-save"></i>
+                            Save Pet Profile
+                        </button>
+                    </div>
+                </form>
+            </section>
+
+            <!-- Prediction Results Modal -->
+            <div class="modal" id="prediction-modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2>Adoption Prediction Results</h2>
+                        <button class="modal-close" onclick="closePredictionModal()">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="prediction-result">
+                            <div class="prediction-icon">
+                                <i class="fas fa-calendar-alt"></i>
+                            </div>
+                            <div class="prediction-content">
+                                <h3 id="prediction-title">Adoption Timeline Prediction</h3>
+                                <p id="prediction-description"></p>
+                                <div class="prediction-confidence">
+                                    <span>Confidence Level: </span>
+                                    <span id="confidence-level" class="confidence-value">---%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" onclick="closePredictionModal()">Close</button>
+                        <button class="btn btn-success" onclick="savePetProfile()">
+                            <i class="fas fa-save"></i>
+                            Save Pet Profile
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="assets/data.js"></script>
+    <script src="assets/script.js"></script>
+</body>
+
+</html>
