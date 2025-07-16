@@ -10,6 +10,9 @@ document.addEventListener('DOMContentLoaded', function () {
     initializeApplication();
 });
 
+/**
+ * Initializes the application by setting up UI components and event handlers
+ */
 function initializeApplication() {
     // Load saved pets and update dashboard
     updateDashboard();
@@ -28,6 +31,9 @@ function initializeApplication() {
     }, 50);
 }
 
+/**
+ * Sets up all event listeners for form interactions and navigation
+ */
 function setupEventListeners() {
     // Photo upload handling
     const photoInput = document.getElementById('photo-input');
@@ -80,6 +86,9 @@ function setupEventListeners() {
     }
 }
 
+/**
+ * Shows the dashboard view and updates navigation state
+ */
 function showDashboard() {
     document.getElementById('dashboard').style.display = 'block';
     document.getElementById('add-pet').style.display = 'none';
@@ -91,6 +100,9 @@ function showDashboard() {
     updateDashboard();
 }
 
+/**
+ * Shows the add pet form and updates navigation state
+ */
 function showAddPetForm() {
     document.getElementById('dashboard').style.display = 'none';
     document.getElementById('add-pet').style.display = 'block';
@@ -105,6 +117,9 @@ function showAddPetForm() {
     }
 }
 
+/**
+ * Resets the form to its initial state
+ */
 function resetForm() {
     // Reset form data
     currentStep = 1;
@@ -133,6 +148,9 @@ function resetForm() {
     populateBreedDropdown();
 }
 
+/**
+ * Updates the dashboard with current statistics and pet data
+ */
 function updateDashboard() {
     const totalPets = savedPets.length;
     const avgPrediction = calculateAveragePrediction();
@@ -150,15 +168,19 @@ function updateDashboard() {
     updateRecentPets();
 }
 
+/**
+ * Calculates the average prediction time for all pets
+ * @returns {string} Average prediction in days
+ */
 function calculateAveragePrediction() {
     if (savedPets.length === 0) return '-- days';
 
     const predictions = savedPets.map(pet => {
         switch (pet.prediction) {
-            case 0: return 3.5; // 0-7 days average
-            case 1: return 19; // 8-30 days average  
-            case 2: return 60; // 31-90 days average
-            case 3: return 120; // 100+ days average
+            case 0: return 3.5;     // 0-7 days average
+            case 1: return 19;      // 8-30 days average
+            case 2: return 60;      // 31-90 days average
+            case 3: return 120;     // 100+ days average
             default: return 30;
         }
     });
@@ -167,10 +189,18 @@ function calculateAveragePrediction() {
     return Math.round(avg) + ' days';
 }
 
+/**
+ * Counts pets with fast adoption predictions (≤30 days)
+ * @returns {number} Number of fast adopters
+ */
 function countFastAdopters() {
     return savedPets.filter(pet => pet.prediction <= 1).length;
 }
 
+/**
+ * Calculates the average confidence level for all pets
+ * @returns {string} Average confidence percentage
+ */
 function calculateAverageConfidence() {
     if (savedPets.length === 0) return '--%';
 
@@ -179,9 +209,12 @@ function calculateAverageConfidence() {
     return Math.round(avg) + '%';
 }
 
+/**
+ * Updates the recent pets grid with the latest 6 pets
+ */
 function updateRecentPets() {
     const recentPetsGrid = document.getElementById('recent-pets-grid');
-    const recentPets = savedPets.slice(-6).reverse(); // Get last 6 pets, newest first
+    const recentPets = savedPets.slice(-6).reverse();
 
     recentPetsGrid.innerHTML = '';
 
@@ -191,6 +224,11 @@ function updateRecentPets() {
     });
 }
 
+/**
+ * Creates a pet card element for display in the dashboard
+ * @param {Object} pet - Pet object with all pet data
+ * @returns {HTMLElement} Pet card DOM element
+ */
 function createPetCard(pet) {
     const card = document.createElement('div');
     card.className = 'pet-card';
@@ -245,23 +283,35 @@ function createPetCard(pet) {
     return card;
 }
 
+/**
+ * Gets the breed name from type and breed ID
+ * @param {number} type - Pet type ID
+ * @param {number} breedId - Breed ID
+ * @returns {string} Breed name
+ */
 function getBreedName(type, breedId) {
     if (!type || !breedId) return 'Unknown Breed';
     return BREED_DATA[type] && BREED_DATA[type][breedId] ? BREED_DATA[type][breedId] : 'Unknown Breed';
 }
 
+/**
+ * Converts pet type ID to readable name
+ * @param {number} typeId - Pet type ID
+ * @returns {string} Pet type name
+ */
 function getTypeName(typeId) {
     const typeMap = {
         1: 'Dog',
         2: 'Cat',
-        3: 'Bird',
-        4: 'Rabbit',
-        5: 'Other'
     };
     return typeMap[typeId] || 'Unknown';
 }
 
-// Helper functions for modal display
+/**
+ * Converts gender ID to readable name
+ * @param {number} genderId - Gender ID
+ * @returns {string} Gender name
+ */
 function getGenderName(genderId) {
     const genderMap = {
         1: 'Male',
@@ -271,10 +321,20 @@ function getGenderName(genderId) {
     return genderMap[genderId] || 'Unknown';
 }
 
+/**
+ * Gets color name from color ID
+ * @param {number} colorId - Color ID
+ * @returns {string} Color name
+ */
 function getColorName(colorId) {
     return COLOR_DATA[colorId] || 'Unknown Color';
 }
 
+/**
+ * Converts maturity size ID to readable name
+ * @param {number} sizeId - Size ID
+ * @returns {string} Size name
+ */
 function getMaturitySizeName(sizeId) {
     const sizeMap = {
         1: 'Small',
@@ -286,6 +346,11 @@ function getMaturitySizeName(sizeId) {
     return sizeMap[sizeId] || 'Unknown';
 }
 
+/**
+ * Converts fur length ID to readable name
+ * @param {number} furId - Fur length ID
+ * @returns {string} Fur length name
+ */
 function getFurLengthName(furId) {
     const furMap = {
         1: 'Short',
@@ -296,6 +361,11 @@ function getFurLengthName(furId) {
     return furMap[furId] || 'Unknown';
 }
 
+/**
+ * Converts vaccination status ID to readable text
+ * @param {number} status - Vaccination status ID
+ * @returns {string} Vaccination status
+ */
 function getVaccinationStatus(status) {
     const statusMap = {
         1: 'Yes',
@@ -305,6 +375,11 @@ function getVaccinationStatus(status) {
     return statusMap[status] || 'Unknown';
 }
 
+/**
+ * Converts health status ID to readable text
+ * @param {number} healthId - Health status ID
+ * @returns {string} Health status
+ */
 function getHealthStatus(healthId) {
     const healthMap = {
         1: 'Healthy',
@@ -315,6 +390,9 @@ function getHealthStatus(healthId) {
     return healthMap[healthId] || 'Unknown';
 }
 
+/**
+ * Populates the breed dropdown (initially empty until pet type is selected)
+ */
 function populateBreedDropdown() {
     const breedSelect = document.getElementById('pet-breed');
     if (!breedSelect) return;
@@ -323,6 +401,9 @@ function populateBreedDropdown() {
     breedSelect.innerHTML = '<option value="">First select pet type</option>';
 }
 
+/**
+ * Handles pet type selection and updates breed dropdown accordingly
+ */
 function handlePetTypeChange() {
     const petType = document.getElementById('pet-type').value;
     const breedSelect = document.getElementById('pet-breed');
@@ -344,6 +425,9 @@ function handlePetTypeChange() {
     }
 }
 
+/**
+ * Populates the color dropdown with available colors
+ */
 function populateColorDropdown() {
     const colorSelect = document.getElementById('pet-color');
     if (!colorSelect) return;
@@ -358,6 +442,9 @@ function populateColorDropdown() {
     });
 }
 
+/**
+ * Populates the state dropdown with available states
+ */
 function populateStateDropdown() {
     const stateSelect = document.getElementById('pet-state');
     if (!stateSelect) return;
@@ -372,6 +459,9 @@ function populateStateDropdown() {
     });
 }
 
+/**
+ * Handles form submission, validates current step, and saves pet data
+ */
 function nextStep() {
     if (currentStep < totalSteps) {
         currentStep++;
@@ -379,6 +469,9 @@ function nextStep() {
     }
 }
 
+/**
+ * Handles form submission, validates current step, and saves pet data
+ */
 function previousStep() {
     if (currentStep > 1) {
         currentStep--;
@@ -386,6 +479,9 @@ function previousStep() {
     }
 }
 
+/**
+ * Handles form submission, validates current step, and saves pet data
+ */
 function showStep(step) {
     // Hide all steps
     document.querySelectorAll('.form-step').forEach(stepEl => {
@@ -412,6 +508,9 @@ function showStep(step) {
     updateNavigationButtons();
 }
 
+/**
+ * Handles form submission, validates current step, and saves pet data
+ */
 function updateProgress() {
     const progressPercentage = (currentStep / totalSteps) * 100;
     const progressFill = document.getElementById('progress-fill');
@@ -431,6 +530,9 @@ function updateProgress() {
     }
 }
 
+/**
+ * Handles form submission, validates current step, and saves pet data
+ */
 function updateStepDisplay() {
     // Update step indicator
     document.getElementById('current-step').textContent = currentStep;
@@ -464,6 +566,9 @@ function updateStepDisplay() {
     updateNavigationButtons();
 }
 
+/**
+ * Handles form submission, validates current step, and saves pet data
+ */
 function updateNavigationButtons() {
     const prevBtn = document.getElementById('prev-btn');
     const nextBtn = document.getElementById('next-btn');
@@ -482,6 +587,11 @@ function updateNavigationButtons() {
     }
 }
 
+/**
+ * Handles form submission, validates current step, and saves pet data
+ * @param {Event} event - Form submission event
+ * @return {boolean} True if submission is valid, false otherwise
+ */
 function validateCurrentStep() {
     const currentStepEl = document.getElementById(`step-${currentStep}`);
     if (!currentStepEl) return false;
@@ -505,25 +615,50 @@ function validateCurrentStep() {
     return isValid;
 }
 
+/**
+ * Handles form submission, validates current step, and saves pet data
+ * @param {Event} event - Form submission event
+ * @return {boolean} True if submission is valid, false otherwise
+ */
 function handlePhotoSelection(event) {
     const files = Array.from(event.target.files);
     processFiles(files);
 }
 
+/**
+ * Handles drag and drop events for photo upload area
+ * @param {Event} event - Drag and drop event
+ * @return {void}
+ */
 function handleDragOver(event) {
     event.preventDefault();
 }
 
+/**
+ * Handles drag enter event for photo upload area
+ * @param {Event} event - Drag enter event
+ * @return {void}
+ */
 function handleDragEnter(event) {
     event.preventDefault();
     event.currentTarget.classList.add('dragover');
 }
 
+/**
+ * Handles drag leave event for photo upload area
+ * @param {Event} event - Drag leave event
+ * @return {void}
+ */
 function handleDragLeave(event) {
     event.preventDefault();
     event.currentTarget.classList.remove('dragover');
 }
 
+/**
+ * Handles drop event for photo upload area
+ * @param {Event} event - Drop event
+ * @return {void}
+ */
 function handleDrop(event) {
     event.preventDefault();
     event.currentTarget.classList.remove('dragover');
@@ -533,6 +668,11 @@ function handleDrop(event) {
     processFiles(imageFiles);
 }
 
+/**
+ * Processes selected files and updates the photo preview
+ * @param {File[]} files - Array of File objects
+ * @return {void}
+ */
 function processFiles(files) {
     files.forEach(file => {
         if (file.type.startsWith('image/')) {
@@ -550,6 +690,9 @@ function processFiles(files) {
     });
 }
 
+/**
+ * Updates the photo preview section with uploaded images
+ */
 function updatePhotoPreview() {
     const photoPreview = document.getElementById('photo-preview');
     const uploadWarning = document.getElementById('upload-warning');
@@ -574,11 +717,21 @@ function updatePhotoPreview() {
     }
 }
 
+/**
+ * Removes a photo from the uploaded photos array and updates the preview
+ * @param {number} index - Index of the photo to remove
+ * @return {void}
+ */
 function removePhoto(index) {
     uploadedPhotos.splice(index, 1);
     updatePhotoPreview();
 }
 
+/**
+ * Handles form submission, validates current step, and saves pet data
+ * @param {Event} event - Form submission event
+ * @return {boolean} True if submission is valid, false otherwise
+ */
 function generatePrediction() {
     // Collect form data
     collectFormData();
@@ -590,6 +743,9 @@ function generatePrediction() {
     showPredictionModal(prediction);
 }
 
+/**
+ * Collects form data and prepares the petData object
+ */
 function collectFormData() {
     const formData = new FormData(document.getElementById('pet-form'));
 
@@ -618,6 +774,11 @@ function collectFormData() {
     };
 }
 
+/**
+ * Simulates ML prediction using rule-based scoring
+ * @param {Object} data - Pet data object
+ * @returns {Object} Prediction result with class, confidence, and score
+ */
 function simulatePrediction(data) {
     // Simple rule-based prediction simulation
     // In a real application, this would call your ML model
@@ -691,6 +852,11 @@ function simulatePrediction(data) {
     };
 }
 
+/**
+ * Shows the prediction modal with the result from the ML model
+ * @param {Object} prediction - Prediction result object
+ * @return {void}
+ */
 function showPredictionModal(prediction) {
     const modal = document.getElementById('prediction-modal');
     const predictionTitle = document.getElementById('prediction-title');
@@ -721,6 +887,9 @@ function showPredictionModal(prediction) {
     }
 }
 
+/**
+ * Closes the prediction modal
+ */
 function closePredictionModal() {
     const modal = document.getElementById('prediction-modal');
     if (modal) {
@@ -728,6 +897,9 @@ function closePredictionModal() {
     }
 }
 
+/**
+ * Saves the pet profile to local storage and updates the dashboard
+ */
 function savePetProfile() {
     if (petData.editingId) {
         // Update existing pet
@@ -771,12 +943,20 @@ function savePetProfile() {
     showDashboard();
 }
 
+/**
+ * Handles form submission, validates current step, and saves pet data
+ * @param {Event} event - Form submission event
+ * @return {void}
+ */
 function handleFormSubmit(event) {
     event.preventDefault();
     generatePrediction();
 }
 
-// Delete pet functionality
+/**
+ * Deletes a pet from local storage and backend with confirmation
+ * @param {string} petId - Unique pet identifier to delete
+ */
 function deletePet(petId) {
     if (!petId) {
         alert('Pet ID is required for deletion');
@@ -814,6 +994,10 @@ function deletePet(petId) {
     alert(`"${petName}" has been deleted successfully!`);
 }
 
+/**
+ * Attempts to delete pet from backend server (optional)
+ * @param {string} petId - Pet ID to delete from backend
+ */
 async function deletePetFromBackend(petId) {
     try {
         const response = await fetch('http://localhost:5000/delete', {
@@ -839,7 +1023,10 @@ async function deletePetFromBackend(petId) {
     }
 }
 
-// Pet details modal functionality
+/**
+ * Shows detailed pet information in a modal dialog
+ * @param {string} petId - Unique pet identifier
+ */
 function showPetDetails(petId) {
     console.log('showPetDetails called with petId:', petId); // Debug log
 
@@ -985,6 +1172,9 @@ function showPetDetails(petId) {
     document.body.style.overflow = 'hidden';
 }
 
+/**
+ * Closes the pet details modal and restores page scrolling
+ */
 function closePetModal() {
     const modal = document.querySelector('.pet-modal-overlay');
     if (modal) {
@@ -1013,6 +1203,11 @@ function editPet(petId) {
     }, 100);
 }
 
+/**
+ * Fills the add/edit pet form with existing pet data
+ * @param {Object} pet - Pet data object to fill the form with
+ * @return {void}
+ */
 function fillFormWithPetData(pet) {
     // Fill basic information
     document.getElementById('pet-type').value = pet.type;
@@ -1070,7 +1265,9 @@ function getFurLengthName(furLengthId) {
     return furLengthMap[furLengthId] || 'Unknown';
 }
 
-// Export all pets to CSV functionality
+/**
+ * Exports all saved pets to a CSV file for download
+ */
 function exportAllToCSV() {
     if (savedPets.length === 0) {
         alert('No pets to export. Add some pets first!');
@@ -1132,6 +1329,11 @@ function exportAllToCSV() {
     }
 }
 
+/**
+ * Formats a date string into a readable format
+ * @param {string} dateString - ISO date string
+ * @returns {string} Formatted date (e.g., "Jan 15, 2025")
+ */
 function formatDate(dateString) {
     if (!dateString) return 'Unknown';
 
@@ -1150,6 +1352,9 @@ function formatDate(dateString) {
     }
 }
 
+/**
+ * Shows all pets in the dashboard (not just recent ones)
+ */
 function showAllPets() {
     const recentPetsGrid = document.getElementById('recent-pets-grid');
 
@@ -1192,6 +1397,9 @@ function showAllPets() {
     }
 }
 
+/**
+ * Resets the display to show only recent pets (last 6)
+ */
 function showRecentPets() {
     // Reset to showing only recent pets
     updateRecentPets();
@@ -1213,10 +1421,20 @@ function showRecentPets() {
     }
 }
 
+/**
+ * Gets state name from state ID
+ * @param {number} stateId - State ID
+ * @returns {string} State name
+ */
 function getStateName(stateId) {
     return STATE_DATA[stateId] || 'Unknown';
 }
 
+/**
+ * Gets prediction period information from prediction class
+ * @param {number} predictionClass - Prediction class (0-3)
+ * @returns {Object} Period object with days, badge, etc.
+ */
 function getPredictionPeriod(predictionClass) {
     return ADOPTION_PERIODS[predictionClass] || ADOPTION_PERIODS[2];
 }

@@ -1,9 +1,29 @@
+/*
+ * PettyAI - Pet Adoption Prediction Application
+ * Stylesheet for the frontend application
+ * 
+ * This file contains all styles for the pet adoption prediction interface
+ * including dashboard, forms, modals, and responsive design.
+ */
+
+/* ==========================================================================
+   GLOBAL STYLES & RESET
+   ========================================================================== 
+*/
+
+/**
+ * Base reset for all elements
+ */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
+/** 
+ * Base body styling with Inter font family
+ * Sets up the main color scheme and typography
+ */
 body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     background-color: #f8fafc;
@@ -11,13 +31,23 @@ body {
     line-height: 1.6;
 }
 
+/**
+ * Main container with full height and flex layout
+ */
 .container {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
 }
 
-/* Header Styles */
+/* ==========================================================================
+   HEADER & NAVIGATION
+   ========================================================================== 
+*/
+
+/**
+ * Sticky header with white background and subtle border
+ */
 .header {
     background: white;
     border-bottom: 1px solid #e2e8f0;
@@ -27,6 +57,9 @@ body {
     z-index: 100;
 }
 
+/**
+ * Navigation container with centered content and flexbox layout
+ */
 .nav-container {
     max-width: 1200px;
     margin: 0 auto;
@@ -36,6 +69,9 @@ body {
     height: 4rem;
 }
 
+/**
+ * Logo styling with blue accent color and paw icon
+ */
 .logo {
     display: flex;
     align-items: center;
@@ -45,15 +81,24 @@ body {
     color: #3b82f6;
 }
 
+/**
+ * Logo icon with larger font size
+ */
 .logo i {
     font-size: 1.5rem;
 }
 
+/**
+ * Navigation menu with horizontal layout
+ */
 .nav-menu {
     display: flex;
     gap: 2rem;
 }
 
+/**
+ * Navigation links with hover and active states
+ */
 .nav-link {
     text-decoration: none;
     color: #64748b;
@@ -69,7 +114,14 @@ body {
     background-color: #eff6ff;
 }
 
-/* Main Content */
+/* ==========================================================================
+   MAIN CONTENT LAYOUT
+   ========================================================================== 
+*/
+
+/**
+ * Main content area with centered layout and max-width constraint
+ */
 .main-content {
     flex: 1;
     padding: 2rem;
@@ -78,6 +130,9 @@ body {
     width: 100%;
 }
 
+/**
+ * Generic section styling for cards and containers
+ */
 .section {
     background: white;
     border-radius: 1rem;
@@ -85,12 +140,22 @@ body {
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-/* Dashboard Styles */
+/* ==========================================================================
+   DASHBOARD STYLES
+   ========================================================================== 
+*/
+
+/**
+ * Dashboard header with centered title and description
+ */
 .dashboard-header {
     text-align: center;
     margin-bottom: 3rem;
 }
 
+/**
+ * Dashboard title with larger font and bold weight
+ */
 .dashboard-header h1 {
     font-size: 2.5rem;
     font-weight: 700;
@@ -98,12 +163,18 @@ body {
     margin-bottom: 0.5rem;
 }
 
+/**
+ * Dashboard description with smaller font and muted color
+ */
 .dashboard-header p {
     font-size: 1.125rem;
     color: #64748b;
     margin-bottom: 2rem;
 }
 
+/**
+ * Statistics grid with responsive auto-fit columns
+ */
 .stats-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -111,6 +182,9 @@ body {
     margin-bottom: 3rem;
 }
 
+/**
+ * Individual stat card styling with hover effects
+ */
 .stat-card {
     background: white;
     border: 1px solid #e2e8f0;
@@ -122,11 +196,17 @@ body {
     transition: all 0.2s;
 }
 
+/**
+ * Stat card hover effect with shadow and transform
+ */
 .stat-card:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
+/**
+ * Stat icon with gradient backgrounds for different metrics
+ */
 .stat-icon {
     width: 3rem;
     height: 3rem;
@@ -138,6 +218,7 @@ body {
     color: white;
 }
 
+/* Icon color variations for different statistics */
 .stat-icon.heart {
     background: linear-gradient(135deg, #ef4444, #f87171);
 }
@@ -154,6 +235,9 @@ body {
     background: linear-gradient(135deg, #8b5cf6, #a78bfa);
 }
 
+/**
+ * Stat content with large numbers and descriptive text
+ */
 .stat-content h3 {
     font-size: 2rem;
     font-weight: 700;
@@ -172,6 +256,9 @@ body {
     color: #64748b;
 }
 
+/**
+ * Section header with title and action buttons
+ */
 .section-header {
     display: flex;
     justify-content: space-between;
@@ -191,17 +278,30 @@ body {
     font-weight: 500;
 }
 
+/* ==========================================================================
+   PET CARDS & GRID LAYOUT
+   ========================================================================== 
+*/
+
+/**
+ * Responsive grid for pet cards
+ */
 .pets-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 1.5rem;
 }
 
+/**
+ * Individual pet card with hover animations
+ */
 .pet-card {
     border: 1px solid #e2e8f0;
     border-radius: 1rem;
     overflow: hidden;
     transition: all 0.2s;
+    cursor: pointer;
+    /* Added for clickable cards */
 }
 
 .pet-card:hover {
@@ -209,6 +309,9 @@ body {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
+/**
+ * Pet image with fixed aspect ratio and hover zoom effect
+ */
 .pet-image {
     width: 100%;
     height: 200px;
@@ -225,10 +328,16 @@ body {
     transform: scale(1.05);
 }
 
+/**
+ * Pet information section with padding and content layout
+ */
 .pet-info {
     padding: 1rem;
 }
 
+/**
+ * Pet name styling with larger font and bold weight
+ */
 .pet-name {
     font-size: 1.125rem;
     font-weight: 600;
@@ -236,6 +345,9 @@ body {
     margin-bottom: 0.5rem;
 }
 
+/**
+ * Pet details list with icon and text layout
+ */
 .pet-details {
     display: flex;
     flex-direction: column;
@@ -243,6 +355,9 @@ body {
     margin-bottom: 1rem;
 }
 
+/**
+ * Individual pet detail item with icon and text
+ */
 .pet-detail {
     display: flex;
     align-items: center;
@@ -256,6 +371,9 @@ body {
     color: #94a3b8;
 }
 
+/**
+ * Pet card footer with prediction and fee information
+ */
 .pet-footer {
     display: flex;
     justify-content: space-between;
@@ -272,6 +390,9 @@ body {
     color: #059669;
 }
 
+/**
+ * Prediction badges with color coding for different timeframes
+ */
 .prediction-badge {
     padding: 0.25rem 0.75rem;
     border-radius: 1rem;
@@ -280,6 +401,7 @@ body {
     text-transform: uppercase;
 }
 
+/* Badge color variations */
 .prediction-badge.fast {
     background: #dcfce7;
     color: #166534;
@@ -295,12 +417,22 @@ body {
     color: #991b1b;
 }
 
-/* Form Styles */
+/* ==========================================================================
+   FORM STYLES
+   ========================================================================== 
+*/
+
+/**
+ * Form header with centered title and description
+ */
 .form-header {
     text-align: center;
     margin-bottom: 2rem;
 }
 
+/**
+ * Form header title with larger font and bold weight
+ */
 .form-header h1 {
     font-size: 2.5rem;
     font-weight: 700;
@@ -308,16 +440,29 @@ body {
     margin-bottom: 0.5rem;
 }
 
+/**
+ * Form header description with smaller font and muted color
+ */
 .form-header p {
     font-size: 1.125rem;
     color: #64748b;
 }
 
-/* Progress Indicator */
+/* ==========================================================================
+   PROGRESS INDICATOR
+   ========================================================================== 
+*/
+
+/**
+ * Progress container for the multi-step form
+ */
 .progress-container {
     margin-bottom: 3rem;
 }
 
+/**
+ * Progress information displaying current step and completion percentage
+ */
 .progress-info {
     display: flex;
     justify-content: space-between;
@@ -325,16 +470,25 @@ body {
     margin-bottom: 1rem;
 }
 
+/**
+ * Step indicator showing current step in the form
+ */
 .step-indicator {
     font-weight: 500;
     color: #374151;
 }
 
+/**
+ * Completion percentage with larger font and bold weight
+ */
 .completion-indicator {
     font-weight: 600;
     color: #3b82f6;
 }
 
+/**
+ * Progress bar with animated fill
+ */
 .progress-bar {
     width: 100%;
     height: 0.5rem;
@@ -344,6 +498,9 @@ body {
     margin-bottom: 1.5rem;
 }
 
+/**
+ * Progress fill with gradient background and transition effect
+ */
 .progress-fill {
     height: 100%;
     background: linear-gradient(90deg, #3b82f6, #60a5fa);
@@ -352,12 +509,18 @@ body {
     width: 17%;
 }
 
+/**
+ * Step indicators showing progress through the form
+ */
 .progress-steps {
     display: flex;
     justify-content: space-between;
     position: relative;
 }
 
+/**
+ * Individual step with number and label
+ */
 .step {
     display: flex;
     flex-direction: column;
@@ -366,6 +529,9 @@ body {
     position: relative;
 }
 
+/**
+ * Step number circle with state-based styling
+ */
 .step-number {
     width: 2.5rem;
     height: 2.5rem;
@@ -382,6 +548,7 @@ body {
     transition: all 0.2s;
 }
 
+/* Step state variations */
 .step.active .step-number {
     background: #3b82f6;
     color: white;
@@ -403,21 +570,37 @@ body {
     color: #3b82f6;
 }
 
-/* Form Steps */
+/* ==========================================================================
+   FORM STEPS & ANIMATIONS
+   ========================================================================== 
+*/
+
+/**
+ * Form container with relative positioning for step transitions
+ */
 .pet-form {
     position: relative;
     min-height: 400px;
 }
 
+/**
+ * Individual form step with fade-in animation
+ */
 .form-step {
     display: none;
     animation: fadeIn 0.3s ease;
 }
 
+/**
+ * Active form step displayed with block layout
+ */
 .form-step.active {
     display: block;
 }
 
+/**
+ * Fade-in animation for form steps
+ */
 @keyframes fadeIn {
     from {
         opacity: 0;
@@ -430,11 +613,17 @@ body {
     }
 }
 
+/**
+ * Step content container with centered layout
+ */
 .step-content {
     max-width: 600px;
     margin: 0 auto;
 }
 
+/**
+ * Step header with icon and title
+ */
 .step-header {
     display: flex;
     align-items: center;
@@ -444,21 +633,38 @@ body {
     border-bottom: 1px solid #e2e8f0;
 }
 
+/**
+ * Step header icon and title styling
+ */
 .step-header i {
     font-size: 1.5rem;
     color: #3b82f6;
 }
 
+/**
+ * Step header title with larger font
+ */
 .step-header h2 {
     font-size: 1.5rem;
     font-weight: 600;
     color: #1e293b;
 }
 
+/* ==========================================================================
+   FORM ELEMENTS
+   ========================================================================== 
+*/
+
+/**
+ * Form group container for input fields
+ */
 .form-group {
     margin-bottom: 1.5rem;
 }
 
+/**
+ * Form labels with consistent styling
+ */
 .form-group label {
     display: block;
     font-weight: 500;
@@ -466,6 +672,9 @@ body {
     margin-bottom: 0.5rem;
 }
 
+/**
+ * Input fields, selects, and textareas with focus states
+ */
 .form-group input,
 .form-group select,
 .form-group textarea {
@@ -478,6 +687,9 @@ body {
     background: white;
 }
 
+/**
+ * Base focus styles for form elements
+ */
 .form-group input:focus,
 .form-group select:focus,
 .form-group textarea:focus {
@@ -486,12 +698,18 @@ body {
     box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
+/**
+ * Input with prefix (for currency symbols, etc.)
+ */
 .input-with-prefix {
     position: relative;
     display: flex;
     align-items: center;
 }
 
+/**
+ * Input prefix styling for currency or unit symbols
+ */
 .input-prefix {
     position: absolute;
     left: 0.75rem;
@@ -500,10 +718,16 @@ body {
     z-index: 1;
 }
 
+/**
+ * Input field with left padding to accommodate prefix
+ */
 .input-with-prefix input {
     padding-left: 3rem;
 }
 
+/**
+ * Form help text for additional guidance
+ */
 .form-help {
     display: block;
     font-size: 0.875rem;
@@ -511,7 +735,14 @@ body {
     margin-top: 0.25rem;
 }
 
-/* Photo Upload */
+/* ==========================================================================
+   PHOTO UPLOAD SECTION
+   ========================================================================== 
+*/
+
+/**
+ * Photo upload drag-and-drop area
+ */
 .photo-upload-area {
     border: 2px dashed #d1d5db;
     border-radius: 1rem;
@@ -521,33 +752,51 @@ body {
     cursor: pointer;
 }
 
+/**
+ * Photo upload area hover and dragover states
+ */
 .photo-upload-area:hover {
     border-color: #3b82f6;
     background: #f8fafc;
 }
 
+/**
+ * Photo upload area when dragging files over it
+ */
 .photo-upload-area.dragover {
     border-color: #3b82f6;
     background: #eff6ff;
 }
 
+/**
+ * Upload icon and text styling
+ */
 .upload-icon {
     font-size: 3rem;
     color: #9ca3af;
     margin-bottom: 1rem;
 }
 
+/**
+ * Upload text with larger font and bold weight
+ */
 .upload-text p {
     font-size: 1.125rem;
     color: #374151;
     margin-bottom: 0.5rem;
 }
 
+/**
+ * Subtext for additional instructions
+ */
 .upload-subtext {
     color: #64748b !important;
     font-size: 0.875rem !important;
 }
 
+/**
+ * Photo preview grid for uploaded images
+ */
 .photo-preview {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
@@ -555,6 +804,9 @@ body {
     margin-top: 1rem;
 }
 
+/**
+ * Individual photo preview item with remove button
+ */
 .photo-preview-item {
     position: relative;
     border-radius: 0.5rem;
@@ -562,12 +814,18 @@ body {
     aspect-ratio: 1;
 }
 
+/**
+ * Photo preview image styling
+ */
 .photo-preview-item img {
     width: 100%;
     height: 100%;
     object-fit: cover;
 }
 
+/**
+ * Photo remove button
+ */
 .photo-remove {
     position: absolute;
     top: 0.25rem;
@@ -585,6 +843,9 @@ body {
     font-size: 0.75rem;
 }
 
+/**
+ * Upload warning message for missing photos
+ */
 .upload-warning {
     margin-top: 1rem;
     padding: 1rem;
@@ -596,17 +857,30 @@ body {
     gap: 0.75rem;
 }
 
+/**
+ * Upload warning icon and text styling
+ */
 .upload-warning i {
     color: #f59e0b;
     margin-top: 0.125rem;
 }
 
+/**
+ * Upload warning text with larger font
+ */
 .upload-warning p {
     margin: 0;
     color: #92400e;
 }
 
-/* Buttons */
+/* ==========================================================================
+   BUTTONS & INTERACTIONS
+   ========================================================================== 
+*/
+
+/**
+ * Base button styling with consistent spacing and transitions
+ */
 .btn {
     display: inline-flex;
     align-items: center;
@@ -621,37 +895,55 @@ body {
     font-size: 1rem;
 }
 
+/* Button color variations */
 .btn-primary {
     background: #3b82f6;
     color: white;
 }
 
+/**
+ * Primary button hover effect with slight lift
+ */
 .btn-primary:hover {
     background: #2563eb;
     transform: translateY(-1px);
 }
 
+/**
+ * Secondary button with light background and border
+ */
 .btn-secondary {
     background: #f1f5f9;
     color: #64748b;
     border: 1px solid #e2e8f0;
 }
 
+/**
+ * Secondary button hover effect with darker background
+ */
 .btn-secondary:hover {
     background: #e2e8f0;
 }
 
+/**
+ * Success button with green background for positive actions
+ */
 .btn-success {
     background: #10b981;
     color: white;
 }
 
+/**
+ * Success button hover effect with darker green
+ */
 .btn-success:hover {
     background: #059669;
     transform: translateY(-1px);
 }
 
-/* Form Navigation */
+/**
+ * Form navigation container with space-between layout
+ */
 .form-navigation {
     display: flex;
     justify-content: space-between;
@@ -665,7 +957,14 @@ body {
     flex: 1;
 }
 
-/* Modal Styles */
+/* ==========================================================================
+   MODAL STYLES
+   ========================================================================== 
+*/
+
+/**
+ * Base modal overlay with fade-in animation
+ */
 .modal {
     display: none;
     position: fixed;
@@ -678,12 +977,18 @@ body {
     animation: fadeIn 0.3s ease;
 }
 
+/**
+ * Modal active state to display the modal
+ */
 .modal.active {
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
+/**
+ * Modal content container with slide-up animation
+ */
 .modal-content {
     background: white;
     border-radius: 1rem;
@@ -694,6 +999,9 @@ body {
     animation: slideUp 0.3s ease;
 }
 
+/**
+ * Slide-up animation for modal content
+ */
 @keyframes slideUp {
     from {
         opacity: 0;
@@ -706,6 +1014,9 @@ body {
     }
 }
 
+/**
+ * Modal sections with consistent padding and borders
+ */
 .modal-header {
     display: flex;
     justify-content: space-between;
@@ -714,12 +1025,18 @@ body {
     border-bottom: 1px solid #e2e8f0;
 }
 
+/**
+ * Modal header title with larger font
+ */
 .modal-header h2 {
     font-size: 1.25rem;
     font-weight: 600;
     color: #1e293b;
 }
 
+/**
+ * Modal close button with icon and hover effects
+ */
 .modal-close {
     background: none;
     border: none;
@@ -730,14 +1047,23 @@ body {
     border-radius: 0.25rem;
 }
 
+/**
+ * Modal close button hover effect
+ */
 .modal-close:hover {
     background: #f1f5f9;
 }
 
+/**
+ * Modal body with padding and overflow handling
+ */
 .modal-body {
     padding: 1.5rem;
 }
 
+/**
+ * Modal footer with action buttons
+ */
 .modal-footer {
     display: flex;
     justify-content: flex-end;
@@ -746,6 +1072,9 @@ body {
     border-top: 1px solid #e2e8f0;
 }
 
+/**
+ * Prediction result display in modal
+ */
 .prediction-result {
     display: flex;
     align-items: center;
@@ -753,6 +1082,9 @@ body {
     text-align: left;
 }
 
+/**
+ * Prediction icon with gradient background
+ */
 .prediction-icon {
     width: 4rem;
     height: 4rem;
@@ -765,6 +1097,9 @@ body {
     font-size: 1.5rem;
 }
 
+/**
+ * Prediction content with title and description
+ */
 .prediction-content h3 {
     font-size: 1.25rem;
     font-weight: 600;
@@ -772,11 +1107,17 @@ body {
     margin-bottom: 0.5rem;
 }
 
+/**
+ * Prediction content description with muted color
+ */
 .prediction-content p {
     color: #64748b;
     margin-bottom: 1rem;
 }
 
+/**
+ * Prediction confidence display with flex layout
+ */
 .prediction-confidence {
     display: flex;
     align-items: center;
@@ -784,18 +1125,31 @@ body {
     font-weight: 500;
 }
 
+/**
+ * Confidence label with muted color
+ */
 .confidence-value {
     color: #3b82f6;
     font-weight: 600;
 }
 
-/* Pet Card Header with Delete Button */
+/* ==========================================================================
+   PET CARD INTERACTIVE ELEMENTS
+   ========================================================================== 
+*/
+
+/**
+ * Pet card header for positioning delete button
+ */
 .pet-card-header {
     position: relative;
     height: 0;
     z-index: 10;
 }
 
+/**
+ * Delete button that appears on hover
+ */
 .delete-pet-btn {
     position: absolute;
     top: 0.5rem;
@@ -816,21 +1170,32 @@ body {
     transform: scale(0.8);
 }
 
+/**
+ * Delete button hover effect with scaling and opacity
+ */
 .pet-card:hover .delete-pet-btn {
     opacity: 1;
     transform: scale(1);
 }
 
+/**
+ * Delete button icon with larger size
+ */
 .delete-pet-btn:hover {
     background: rgba(220, 38, 38, 1);
     transform: scale(1.1);
 }
 
+/**
+ * Delete button active state for click feedback
+ */
 .delete-pet-btn:active {
     transform: scale(0.95);
 }
 
-/* Pet type badge */
+/**
+ * Pet type badge with gradient background
+ */
 .pet-type-badge {
     display: inline-block;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -844,7 +1209,14 @@ body {
     letter-spacing: 0.05em;
 }
 
-/* Pet modal styles */
+/* ==========================================================================
+   PET DETAIL MODAL
+   ========================================================================== 
+*/
+
+/**
+ * Pet modal overlay with dark background
+ */
 .pet-modal-overlay {
     position: fixed;
     top: 0;
@@ -859,6 +1231,9 @@ body {
     padding: 1rem;
 }
 
+/**
+ * Pet modal content with large layout for detailed information
+ */
 .pet-modal-content {
     background: white;
     border-radius: 1rem;
@@ -870,6 +1245,9 @@ body {
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
 }
 
+/**
+ * Pet modal header with gradient background
+ */
 .pet-modal-header {
     display: flex;
     justify-content: space-between;
@@ -887,6 +1265,9 @@ body {
     font-weight: 600;
 }
 
+/**
+ * Modal action buttons in header
+ */
 .modal-close-btn {
     background: rgba(255, 255, 255, 0.2);
     border: none;
@@ -898,10 +1279,16 @@ body {
     transition: background-color 0.2s ease;
 }
 
+/**
+ * Modal close button hover effect
+ */
 .modal-close-btn:hover {
     background: rgba(255, 255, 255, 0.3);
 }
 
+/**
+ * Pet modal body with two-column layout
+ */
 .pet-modal-body {
     display: grid;
     grid-template-columns: 1fr 2fr;
@@ -909,6 +1296,9 @@ body {
     padding: 1.5rem;
 }
 
+/**
+ * Pet image section with sticky positioning
+ */
 .pet-modal-image {
     position: sticky;
     top: 0;
@@ -922,6 +1312,9 @@ body {
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
 }
 
+/**
+ * Pet information sections with organized layout
+ */
 .pet-modal-section {
     margin-bottom: 2rem;
 }
@@ -935,12 +1328,18 @@ body {
     border-bottom: 2px solid #e2e8f0;
 }
 
+/**
+ * Information grid for pet details
+ */
 .pet-info-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 1rem;
 }
 
+/**
+ * Individual information item with label and value
+ */
 .info-item {
     display: flex;
     justify-content: space-between;
@@ -963,6 +1362,9 @@ body {
     text-align: right;
 }
 
+/**
+ * Pet description styling
+ */
 .pet-description {
     background: #f8fafc;
     padding: 1rem;
@@ -973,13 +1375,23 @@ body {
     line-height: 1.6;
 }
 
-/* Dashboard Actions */
+/* ==========================================================================
+   DASHBOARD ACTIONS & EXPORT
+   ========================================================================== 
+*/
+
+/**
+ * Dashboard action buttons container
+ */
 .dashboard-actions {
     display: flex;
     align-items: center;
     gap: 1rem;
 }
 
+/**
+ * CSV export button styling
+ */
 .export-csv-btn {
     background: #059669;
     color: white;
@@ -995,22 +1407,33 @@ body {
     transition: all 0.2s ease;
 }
 
+/**
+ * Export button hover effect with darker green
+ */
 .export-csv-btn:hover {
     background: #047857;
     transform: translateY(-1px);
 }
 
+/**
+ * Export button icon with larger size
+ */
 .export-csv-btn i {
     font-size: 0.875rem;
 }
 
-/* Modal Header Buttons */
+/**
+ * Modal header buttons container
+ */
 .modal-header-buttons {
     display: flex;
     align-items: center;
     gap: 0.5rem;
 }
 
+/**
+ * Edit button in modal header
+ */
 .modal-edit-btn {
     background: rgba(255, 255, 255, 0.2);
     border: none;
@@ -1029,25 +1452,45 @@ body {
     background: rgba(255, 255, 255, 0.3);
 }
 
-/* No pets message */
+/* ==========================================================================
+   EMPTY STATES & MESSAGES
+   ========================================================================== 
+*/
+
+/**
+ * No pets message for empty dashboard
+ */
 .no-pets-message {
     text-align: center;
     padding: 3rem 2rem;
     color: #64748b;
 }
 
+/**
+ * No pets message icon with larger size
+ */
 .no-pets-message i {
     font-size: 4rem;
     color: #cbd5e1;
     margin-bottom: 1rem;
 }
 
+/**
+ * No pets message text with larger font
+ */
 .no-pets-message p {
     font-size: 1.125rem;
     margin-bottom: 1.5rem;
 }
 
-/* Responsive Design */
+/* ==========================================================================
+   RESPONSIVE DESIGN
+   ========================================================================== 
+*/
+
+/**
+ * Mobile and tablet responsive adjustments
+ */
 @media (max-width: 768px) {
     .pet-modal-body {
         grid-template-columns: 1fr;

@@ -225,7 +225,7 @@ const BREED_DATA = {
         220: "Wirehaired Pointing Griffon",
         221: "Xoloitzcuintli",
         222: "Yorkshire Terrier",
-        307: "Mixed Breed" // Common mixed breed ID
+        307: "Mixed Breed" 
     },
     2: { // Cats
         223: "Abyssinian",

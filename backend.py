@@ -1,7 +1,11 @@
 #!/usr/bin/env python3
 """
-Pet Adoption Prediction Backend
-This file provides the backend functionality for the pet adoption prediction system.
+PettyAI - Pet Adoption Prediction Backend
+=========================================
+
+This module provides the backend functionality for the PettyAI pet adoption prediction system.
+It handles machine learning model loading, data preprocessing, predictions, and data persistence.
+
 """
 
 import pandas as pd
@@ -16,28 +20,45 @@ import torch
 import torch.nn as nn
 
 class PetAdoptionPredictor:
-    """
-    Pet Adoption Prediction System Backend
+    """    
+    A machine learning backend for predicting pet adoption timeframes.
+    This class integrates with various ML models including PyTorch neural networks,
+    CLIP-based multimodal models, and Scikit-learn classifiers.
     
-    This class handles:
-    - Data preprocessing
-    - Model prediction
-    - CSV file management
-    - Feature engineering
+    The system handles:
+    - Data preprocessing and feature engineering
+    - Model loading and inference (PyTorch/Scikit-learn)
+    - CLIP multimodal model support 
+    - CSV file management for data persistence
+    - Statistical analysis and reporting
+    
+    Attributes:
+        model_path (str): Path to the trained ML model file
+        csv_path (str): Path to the CSV file for data storage
+        model: Loaded ML model instance (PyTorch/Scikit-learn)
+        is_clip_model (bool): Flag indicating if loaded model is CLIP-based
+        device (torch.device): PyTorch device (CPU/CUDA)
+        feature_columns (list): List of feature column names for model input
+        adoption_periods (dict): Mapping of prediction classes to adoption periods
     """
     
     def __init__(self, model_path: Optional[str] = None, csv_path: str = "data/pet_adoption_data.csv"):
         """
-        Initialize the predictor
+        Sets up the predictor with model loading, device configuration, and data initialization.
+        Automatically detects model type (PyTorch/Scikit-learn) and configures appropriate
+        prediction pipeline.
         
         Args:
-            model_path: Path to the trained ML model file (.pt for PyTorch)
-            csv_path: Path to the CSV file for storing pet data
+            model_path (Optional[str]): Path to the trained ML model file. 
+                                      Supports .pt/.pth (PyTorch) and .pkl/.joblib (Scikit-learn).
+                                      If None, no model is loaded initially.
+            csv_path (str): Path to the CSV file for storing pet data.
+                          File will be created if it doesn't exist.
         """
         self.model_path = model_path
         self.csv_path = csv_path
         self.model = None
-        self.is_clip_model = False  # Initialize CLIP model flag
+        self.is_clip_model = False  
         self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
         
         # Feature columns expected by the model (single Breed and Color)
@@ -63,7 +84,14 @@ class PetAdoptionPredictor:
         self.initialize_csv()
     
     def load_model(self, model_path: str):
-        """Load the trained PyTorch model"""
+        """
+        Loads PyTorch or Scikit-learn models with automatic architecture detection.
+        Supports CLIP-based multimodal models with attention mechanisms and fallback to
+        standard neural networks.
+        
+        Args:
+            model_path (str): Path to the model file (.pt/.pth for PyTorch, .pkl/.joblib for Scikit-learn)
+        """
         try:
             print(f"Loading model from: {model_path}")
             if model_path.endswith('.pt') or model_path.endswith('.pth'):
@@ -96,6 +124,22 @@ class PetAdoptionPredictor:
                         
                         # Define the CLIP_MLP_Attn model architecture
                         class CLIP_MLP_Attn(nn.Module):
+                            """
+                            A neural network that combines image, text, and structured
+                            features using multi-head attention mechanisms for pet adoption prediction.
+                            
+                            Architecture:
+                            - Image attention: Self-attention over image embeddings
+                            - Cross-modal attention: Text attending to image features
+                            - Feature projection: Dimension reduction for each modality
+                            - Fusion classifier: Combined feature classification
+                            
+                            Args:
+                                struct_dim (int): Dimension of structured features (pet attributes)
+                                dropout (float): Dropout rate for regularization
+                                hidden_dim (int): Hidden layer dimension in classifier
+                                num_classes (int): Number of output classes (adoption periods)
+                            """
                             def __init__(self, struct_dim, dropout=0.4, hidden_dim=1024, num_classes=4):
                                 super().__init__()
                                 # Attention over image embeddings
@@ -135,9 +179,20 @@ class PetAdoptionPredictor:
                                 )
 
                             def forward(self, x_img, x_text, x_struct):
+                                """
+                                Forward pass through the multimodal network
+                                
+                                Args:
+                                    x_img (torch.Tensor): Image embeddings [B, 512]
+                                    x_text (torch.Tensor): Text embeddings [B, 512]  
+                                    x_struct (torch.Tensor): Structured features [B, struct_dim]
+                                    
+                                Returns:
+                                    torch.Tensor: Classification logits [B, num_classes]
+                                """
                                 # x_img: [B, 512], x_text: [B, 512], x_struct: [B, struct_dim]
-                                x_img_unsqueezed = x_img.unsqueeze(1)  # [B, 1, 512]
-                                x_text_unsqueezed = x_text.unsqueeze(1)  # [B, 1, 512]
+                                x_img_unsqueezed = x_img.unsqueeze(1)       # [B, 1, 512]
+                                x_text_unsqueezed = x_text.unsqueeze(1)     # [B, 1, 512]
                                 # Text attends to image
                                 cross_attn_out, _ = self.cross_attn(query=x_text_unsqueezed, key=x_img_unsqueezed, value=x_img_unsqueezed)
                                 enhanced_img = cross_attn_out.squeeze(1)  # [B, 512]
@@ -192,7 +247,7 @@ class PetAdoptionPredictor:
                     print("DEBUG: Loading full model object")
                     self.model = checkpoint
                 
-                self.model.eval()  # Set to evaluation mode
+                self.model.eval()   # Set to evaluation mode
                 self.model.to(self.device)
                 print(f"PyTorch model loaded successfully from {model_path}")
                 print(f"Model device: {self.device}")
@@ -217,7 +272,17 @@ class PetAdoptionPredictor:
             self.is_clip_model = False
     
     def initialize_csv(self):
-        """Initialize the CSV file with headers if it doesn't exist"""
+        """       
+        Creates the pet data CSV file with proper headers if it doesn't exist.
+        
+        CSV Schema:
+            - PetID: Unique identifier for each pet
+            - Pet Attributes: Type, Name, Age, Breed, Gender, Color, etc.
+            - Health Info: Vaccinated, Dewormed, Sterilized, Health status
+            - Adoption Info: Fee, State, RescuerID, PhotoAmt
+            - Prediction Results: Prediction class, Confidence score
+            - Metadata: Photos (JSON), Description, DateAdded
+        """
         if not os.path.exists(self.csv_path):
             headers = [
                 'PetID', 'Type', 'Name', 'Age', 'Breed', 'Gender', 
@@ -235,13 +300,24 @@ class PetAdoptionPredictor:
     
     def preprocess_pet_data(self, pet_data: Dict) -> Dict:
         """
-        Preprocess pet data for model input
+        Transforms raw pet data into the format expected by the ML model.
+        Handles data validation, type conversion, and feature encoding.
         
         Args:
-            pet_data: Dictionary containing pet information
-            
+            pet_data (Dict): Raw pet data from frontend/API
+                           Expected keys: type, age, breed, gender, color,
+                           maturitySize, furLength, vaccinated, dewormed,
+                           sterilized, health, quantity, fee, state, photoAmt
+        
         Returns:
-            Preprocessed data dictionary
+            Dict: Processed pet data with normalized values and proper types
+            
+        Default Values:
+            - Type: 1 (Cat), Age: 12 months, Gender: 1 (Male)
+            - MaturitySize: 2 (Medium), FurLength: 1 (Short)
+            - Health status: 3 (Healthy), Quantity: 1
+            - Fee: 0 (Free), State: 41401 (Kuala Lumpur)
+            - PhotoAmt: 0 (No photos)
         """
         processed_data = pet_data.copy()
         
@@ -276,13 +352,25 @@ class PetAdoptionPredictor:
     
     def create_feature_vector(self, pet_data: Dict) -> np.ndarray:
         """
-        Create feature vector for model prediction
+        Converts preprocessed pet data into a numerical feature vector
+        that can be fed into the machine learning model.
         
         Args:
-            pet_data: Preprocessed pet data
-            
+            pet_data (Dict): Preprocessed pet data dictionary
+        
         Returns:
-            Feature vector as numpy array
+            np.ndarray: Feature vector with shape (1, n_features)
+                       Ready for model prediction
+        
+        Feature Ordering:
+            The feature vector follows the exact order defined in self.feature_columns:
+            [Type, Age, Breed, Gender, Color, MaturitySize, FurLength, 
+             Vaccinated, Dewormed, Sterilized, Health, Quantity, Fee, State, PhotoAmt]
+        
+        Missing Value Handling:
+            - Missing features are replaced with 0 (neutral value)
+            - Maintains consistent vector dimensionality
+            - Logs warnings for missing critical features
         """
         features = []
         
@@ -296,13 +384,25 @@ class PetAdoptionPredictor:
     
     def predict_adoption_time(self, pet_data: Dict) -> Dict:
         """
-        Predict adoption time for a pet
+        Generates adoption time predictions using the loaded ML model.
+        Supports both CLIP multimodal models and standard classifiers.
         
         Args:
-            pet_data: Dictionary containing pet information
-            
+            pet_data (Dict): Raw pet data from frontend
+        
         Returns:
-            Dictionary containing prediction results
+            Dict: Prediction results containing:
+                - prediction_class (int): Adoption period class (0-3)
+                - confidence (float): Prediction confidence percentage
+                - period_label (str): Human-readable period description
+                - period_days (str): Expected adoption timeframe
+                - description (str): Detailed explanation
+        
+        Prediction Classes:
+            - 0: Same Day - 1 Week (0-7 days)
+            - 1: 1 Week - 1 Month (8-30 days)  
+            - 2: 1-3 Months (31-90 days)
+            - 3: 3+ Months (100+ days)
         """
         # Preprocess data
         processed_data = self.preprocess_pet_data(pet_data)
@@ -393,7 +493,7 @@ class PetAdoptionPredictor:
         else:
             print(f"ERROR: No model loaded - cannot make prediction")
             return {
-                'prediction_class': 2,  # Default to medium prediction
+                'prediction_class': 2,      # Default to medium prediction
                 'confidence': 50.0,
                 'period_label': 'No Model',
                 'period_days': '31-90 days',
@@ -414,14 +514,14 @@ class PetAdoptionPredictor:
     
     def save_pet_data(self, pet_data: Dict, prediction_result: Dict) -> bool:
         """
-        Save pet data to CSV file
+        Persists pet information and prediction results to the CSV database.
         
         Args:
-            pet_data: Original pet data
-            prediction_result: Prediction results
-            
+            pet_data (Dict): Original pet data from frontend
+            prediction_result (Dict): Prediction results from model
+        
         Returns:
-            True if successful, False otherwise
+            bool: True if save successful, False otherwise
         """
         try:
             # Prepare data for CSV
@@ -469,13 +569,13 @@ class PetAdoptionPredictor:
     
     def delete_pet_data(self, pet_id: str) -> bool:
         """
-        Delete pet data from CSV file by PetID
+        Removes a specific pet record from the CSV database using the PetID.
         
         Args:
-            pet_id: ID of the pet to delete
-            
+            pet_id (str): Unique identifier of the pet to delete
+        
         Returns:
-            True if successful, False otherwise
+            bool: True if deletion successful, False otherwise
         """
         try:
             if not os.path.exists(self.csv_path):
@@ -510,10 +610,15 @@ class PetAdoptionPredictor:
 
     def get_statistics(self) -> Dict:
         """
-        Get statistics from saved pet data
+        Computes comprehensive statistics from the pet database for dashboard display.
+        Provides insights into system usage and prediction patterns.
         
         Returns:
-            Dictionary containing statistics
+            Dict: Statistics dictionary containing:
+                - total_pets (int): Total number of pets in database
+                - avg_prediction_days (float): Average predicted adoption days
+                - fast_adopters (int): Count of pets predicted to adopt quickly (≤30 days)
+                - avg_confidence (float): Average prediction confidence score
         """
         try:
             if not os.path.exists(self.csv_path):
@@ -566,13 +671,18 @@ class PetAdoptionPredictor:
     
     def get_recent_pets(self, limit: int = 6) -> List[Dict]:
         """
-        Get recent pets from CSV
+        Fetches the most recently added pets from the database for display
+        in the dashboard recent pets section.
         
         Args:
-            limit: Number of recent pets to return
-            
+            limit (int): Maximum number of recent pets to return (default: 6)
+        
         Returns:
-            List of recent pet dictionaries
+            List[Dict]: List of recent pet dictionaries, each containing:
+                - All pet attributes and prediction results
+                - photos (list): Parsed photo URLs from JSON storage
+                - period_info (dict): Adoption period details
+                - DateAdded: ISO timestamp of record creation
         """
         try:
             if not os.path.exists(self.csv_path):
@@ -613,13 +723,27 @@ class PetAdoptionPredictor:
 # Flask API endpoints (optional)
 def create_flask_app(predictor: PetAdoptionPredictor):
     """
-    Create Flask app with API endpoints
+    Create Flask Web Application with REST API
+    =========================================
+    
+    Builds a Flask web application with RESTful API endpoints
+    for the PettyAI prediction system. Provides both web interface and
+    programmatic access to prediction capabilities.
     
     Args:
-        predictor: PetAdoptionPredictor instance
-        
+        predictor (PetAdoptionPredictor): Initialized predictor instance
+    
     Returns:
-        Flask app instance
+        Flask: Configured Flask application instance with all endpoints
+               Returns None if Flask is not available
+    
+    API Endpoints:
+        GET  /                : Serve main HTML interface
+        POST /predict         : Generate adoption time prediction
+        POST /save            : Save pet data and predictions
+        DELETE /delete        : Remove pet record by ID
+        GET  /statistics      : Retrieve system statistics
+        GET  /recent-pets     : Get recent pet records
     """
     try:
         from flask import Flask, request, jsonify, send_from_directory
@@ -630,12 +754,52 @@ def create_flask_app(predictor: PetAdoptionPredictor):
         
         @app.route('/')
         def index():
-            """Serve the main HTML file"""
+            """
+            Serve Main HTML Interface.
+            Delivers the main web application interface to users.
+            
+            Returns:
+                HTML: The local_app.html file from the frontend directory
+            """
             return send_from_directory('frontend', 'local_app.html')
         
         @app.route('/predict', methods=['POST'])
         def predict():
-            """Predict adoption time for a pet"""
+            """
+            Generate Pet Adoption Time Prediction.
+            Accepts pet data and returns adoption timeframe prediction.
+            
+            Request Body (JSON):
+                {
+                    "type": int,          // Pet type (1=Cat, 2=Dog)
+                    "age": int,           // Age in months
+                    "breed": int,         // Breed ID
+                    "gender": int,        // Gender (1=Male, 2=Female)
+                    "color": int,         // Color ID
+                    "maturitySize": int,  // Size category
+                    "furLength": int,     // Fur length category
+                    "vaccinated": int,    // Vaccination status
+                    "dewormed": int,      // Deworming status
+                    "sterilized": int,    // Sterilization status
+                    "health": int,        // Health condition
+                    "quantity": int,      // Number of pets
+                    "fee": float,         // Adoption fee in USD
+                    "state": int,         // Location state ID
+                    "photoAmt": int       // Number of photos
+                }
+            
+            Response (JSON):
+                {
+                    "prediction_class": int,    // 0-3 adoption period class
+                    "confidence": float,        // Prediction confidence %
+                    "period_label": str,        // Human-readable timeframe
+                    "period_days": str,         // Expected days range
+                    "description": str          // Detailed explanation
+                }
+            
+            Error Response:
+                {"error": "Error message"} with HTTP 500
+            """
             try:
                 pet_data = request.json
                 prediction_result = predictor.predict_adoption_time(pet_data)
@@ -645,7 +809,42 @@ def create_flask_app(predictor: PetAdoptionPredictor):
         
         @app.route('/save', methods=['POST'])
         def save_pet():
-            """Save pet data"""
+            """
+            Save Pet Data and Prediction Results.            
+            Persists pet information and ML predictions to the CSV database.
+            
+            Request Body (JSON):
+                {
+                    "pet_data": {
+                        // Complete pet information object
+                        "id": str,               // Optional: Pet ID
+                        "name": str,             // Pet name
+                        "type": int,             // Pet type
+                        "age": int,              // Age in months
+                        // ... other pet attributes
+                        "photos": [str],         // Array of photo URLs
+                        "description": str       // Pet description
+                    },
+                    "prediction_result": {
+                        // Prediction results from /predict endpoint
+                        "prediction_class": int,
+                        "confidence": float,
+                        "period_label": str,
+                        "period_days": str,
+                        "description": str
+                    }
+                }
+            
+            Response (JSON):
+                {"success": bool}  // True if save successful
+            
+            Error Response:
+                {"error": "Error message"} with HTTP 500
+            
+            Note:
+                Creates unique PetID if not provided. Adds timestamp
+                for tracking. Validates data before persistence.
+            """
             try:
                 data = request.json
                 pet_data = data.get('pet_data', {})
@@ -658,7 +857,30 @@ def create_flask_app(predictor: PetAdoptionPredictor):
         
         @app.route('/delete', methods=['DELETE'])
         def delete_pet():
-            """Delete pet data"""
+            """            
+            Removes a pet record from the CSV database by PetID.
+            
+            Request Body (JSON):
+                {
+                    "pet_id": str  // Unique identifier of pet to delete
+                }
+            
+            Response (JSON):
+                {"success": bool}  // True if deletion successful
+            
+            Error Responses:
+                {"error": "Pet ID is required"} with HTTP 400
+                {"error": "Error message"} with HTTP 500
+            
+            Validation:
+                - Requires non-empty pet_id
+                - Verifies pet exists before deletion
+                - Atomic operation (all or nothing)
+            
+            Note:
+                Deletion is permanent and cannot be undone.
+                Returns success=false if pet doesn't exist.
+            """
             try:
                 data = request.json
                 pet_id = data.get('pet_id', '')
@@ -673,7 +895,32 @@ def create_flask_app(predictor: PetAdoptionPredictor):
         
         @app.route('/statistics', methods=['GET'])
         def get_statistics():
-            """Get statistics"""
+            """
+            Retrieve System Statistics.            
+            Provides analytics about the pet database
+            for dashboard display and system monitoring.
+            
+            Response (JSON):
+                {
+                    "total_pets": int,           // Total pets in database
+                    "avg_prediction_days": float, // Average predicted adoption days
+                    "fast_adopters": int,        // Count of quick adopters (≤30 days)
+                    "avg_confidence": float      // Average prediction confidence
+                }
+            
+            Error Response:
+                {"error": "Error message"} with HTTP 500
+            
+            Statistics Calculated:
+                - Total pets: Count of all records
+                - Avg prediction days: Weighted average by prediction class
+                - Fast adopters: Pets in classes 0-1 (0-30 days)
+                - Avg confidence: Mean of all confidence scores
+            
+            Note:
+                Statistics are computed in real-time from CSV data.
+                Returns zero values for empty database.
+            """
             try:
                 stats = predictor.get_statistics()
                 return jsonify(stats)
@@ -682,7 +929,44 @@ def create_flask_app(predictor: PetAdoptionPredictor):
         
         @app.route('/recent-pets', methods=['GET'])
         def get_recent_pets():
-            """Get recent pets"""
+            """            
+            Returns the most recently added pets for dashboard display.
+            
+            Query Parameters:
+                limit (int): Maximum number of pets to return (default: 6)
+            
+            Response (JSON):
+                [
+                    {
+                        // Complete pet record with all attributes
+                        "PetID": str,
+                        "Name": str,
+                        "Type": int,
+                        "Age": int,
+                        "Breed": int,
+                        // ... other pet attributes
+                        "photos": [str],         // Parsed photo URLs
+                        "Prediction": int,       // Prediction class
+                        "Confidence": float,     // Confidence score
+                        "DateAdded": str,        // ISO timestamp
+                        "period_info": {         // Adoption period details
+                            "label": str,
+                            "days": str,
+                            "description": str
+                        }
+                    }
+                ]
+            
+            Error Response:
+                {"error": "Error message"} with HTTP 500
+            
+            Sorting:
+                Records ordered by DateAdded (newest first)
+            
+            Note:
+                Photos are parsed from JSON storage format.
+                Empty list returned if no pets exist.
+            """
             try:
                 limit = request.args.get('limit', 6, type=int)
                 recent_pets = predictor.get_recent_pets(limit)
@@ -696,8 +980,33 @@ def create_flask_app(predictor: PetAdoptionPredictor):
         print("Flask not installed. API endpoints not available.")
         return None
 
-# Example usage
 if __name__ == "__main__":
+    """
+    Main Application Entry Point
+    ============================
+    
+    Initializes the PettyAI prediction system and starts the Flask web server.
+    
+    Initialization Process:
+        1. Create PetAdoptionPredictor instance
+        2. Load ML model from specified path
+        3. Initialize CSV database
+        4. Start Flask web server (if available)
+        5. Provide fallback instructions for programmatic use
+    
+    Configuration:
+        - Model path: "data/clip_mlp_model.pt"
+        - CSV path: "data/pet_adoption_data.csv"
+        - Server: localhost:5000
+        - Debug mode: Enabled for development
+    
+    Output:
+        Prints system status including:
+        - Model loading success/failure
+        - CSV file location
+        - Server startup information
+        - Usage instructions
+    """
     # Initialize predictor with your PyTorch model
     print("=== PettyAI - Pet Adoption Prediction System ===")
     print("Initializing predictor...")
