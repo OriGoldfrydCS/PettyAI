@@ -48,30 +48,30 @@ The system predicts adoption time in 4 categories:
 
 ## Take a Look
 
-Explore how PettyAI makes pet management simple and smart:
-
-### Smart Dashboard
-<div align="center">
-  <img src="images/main_dashboard_with_pets.png" alt="PettyAI Dashboard with Pets" width="500">
-  <p><em>Get a full overview with live stats, recent pet profiles, and smart adoption predictions - all in one place</em></p>
-</div>
+Explore how PettyAI makes pet management simple:
 
 ### Clean Start
 <div align="center">
   <img src="images/main_dashboard_empty.png" alt="PettyAI Empty Dashboard" width="500">
-  <p><em>Starting fresh? The clean dashboard is ready for you to add your first pet</em></p>
+  <p><em>Starting fresh? The clean dashboard is ready for you to add your first pet.</em></p>
 </div>
 
 ### Add a Pet
 <div align="center">
   <img src="images/add_new_pet_profile.png" alt="Add New Pet Profile Form" width="500">
-  <p><em>Use the easy 6-step form to create detailed and complete pet profiles in minutes</em></p>
+  <p><em>Use the easy 6-step form to create detailed and complete pet profiles in minutes.</em></p>
+</div>
+
+### Smart Dashboard
+<div align="center">
+  <img src="images/main_dashboard_with_pets.png" alt="PettyAI Dashboard with Pets" width="500">
+  <p><em>Get a full overview with live stats, recent pet profiles, and smart adoption predictions – all in one place.</em></p>
 </div>
 
 ### Interactive Pet Cards
 <div align="center">
   <img src="images/pet_card.png" alt="Pet Card Detail View" width="500">
-  <p><em>Click on any pet to view details, edit info, or manage their profile - it's all just one click away</em></p>
+  <p><em>Click on any pet to view details, edit info, or manage their profile – it's all just one click away.</em></p>
 </div>
 
 ## Project Structure
