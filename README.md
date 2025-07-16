@@ -1,66 +1,42 @@
 # PettyAI - Pet Adoption Prediction Application
 
-A web application that helps animal shelters predict how quickly pets will be adopted based on their characteristics, health status, and other factors.
+PettyAI is a web app designed for animal shelters. It predicts how quickly a pet will be adopted based on its features like age, health, and personality. It can help shelters make faster, better decisions for their animals.
 
----
+Finding forever homes for pets is not always easy. PettyAI simplifies this process using technology to help rescuers understand which pets are more likely to get adopted quickly, and which ones might need extra support or promotion.
+
+<div align="center">* * * * *</div>
 
 ## Table of Contents
 
-- [Application Screenshots](#️-application-screenshots)
 - [Features](#features)
 - [Prediction Categories](#prediction-categories)
+- [Take a Look](#take-a-look)
 - [Project Structure](#project-structure)
 - [Setup Instructions](#setup-instructions)
 - [Using the Application](#using-the-application)
 - [Data Management](#data-management)
 - [Customization](#customization)
-- [Browser Compatibility](#browser-compatibility)
 - [Data Privacy](#data-privacy)
 - [Road Map](#road-map)
 - [Contributing](#contributing)
 - [License](#license)
-- [Technical Implementation](#technical-implementation)
-- [Getting Started](#getting-started)
-
----
-
-## Application Screenshots
-
-### Smart Dashboard
-<div align="center">
-  <img src="images/main_dashboard_with_pets.png" alt="PettyAI Dashboard with Pets" width="800">
-  <p><em>Dashboard showing real-time statistics and recent pet profiles with predictions</em></p>
-</div>
-
-### Clean Start
-<div align="center">
-  <img src="images/main_dashboard_empty.png" alt="PettyAI Empty Dashboard" width="800">
-  <p><em>Clean dashboard interface when starting fresh - ready for your first pet!</em></p>
-</div>
-
-### Pet Profile Creation
-<div align="center">
-  <img src="images/add_new_pet_profile.png" alt="Add New Pet Profile Form" width="800">
-  <p><em>Intuitive 6-step form for creating comprehensive pet profiles</em></p>
-</div>
-
-### Interactive Pet Cards
-<div align="center">
-  <img src="images/pet_card.png" alt="Pet Card Detail View" width="800">
-  <p><em>Detailed pet information cards with clickable modals for easy management</em></p>
-</div>
-
----
 
 ## Features
 
-- **Multi-step Form Interface**: Intuitive 6-step form for entering pet information
-- **AI-Powered Predictions**: Uses AI algorithms to predict adoption timeframes based on pet characteristics
-- **Smart Dashboard**: Real-time statistics, insights, and overview of all pets in the system
-- **Interactive Pet Cards**: Click on any pet image to view detailed information and edit profiles
-- **Photo Upload System**: Support for multiple pet photos with drag-and-drop interface
+- **Easy 6-Step Form**  
+  Quickly add pet details using a simple form with 6 steps.
 
----
+- **AI Predictions**  
+  The app uses artificial intelligence to guess how long it will take for a pet to be adopted based on its info.
+
+- **Smart Dashboard**  
+  See live stats, helpful insights, and a full overview of all the pets in the system.
+
+- **Clickable Pet Cards**  
+  Click on any pet's photo to view more details or edit their profile.
+
+- **Photo Upload**  
+  Easily upload multiple pet pictures using drag-and-drop.
 
 ## Prediction Categories
 
@@ -70,17 +46,40 @@ The system predicts adoption time in 4 categories:
 - **31-90 days**: 1-3 months (Moderate adoption)
 - **100+ days**: Long-term care needed (Slow adoption)
 
----
+## Take a Look
+
+Explore how PettyAI makes pet management simple and smart:
+
+### Smart Dashboard
+<div align="center">
+  <img src="images/main_dashboard_with_pets.png" alt="PettyAI Dashboard with Pets" width="500">
+  <p><em>Get a full overview with live stats, recent pet profiles, and smart adoption predictions - all in one place</em></p>
+</div>
+
+### Clean Start
+<div align="center">
+  <img src="images/main_dashboard_empty.png" alt="PettyAI Empty Dashboard" width="500">
+  <p><em>Starting fresh? The clean dashboard is ready for you to add your first pet</em></p>
+</div>
+
+### Add a Pet
+<div align="center">
+  <img src="images/add_new_pet_profile.png" alt="Add New Pet Profile Form" width="500">
+  <p><em>Use the easy 6-step form to create detailed and complete pet profiles in minutes</em></p>
+</div>
+
+### Interactive Pet Cards
+<div align="center">
+  <img src="images/pet_card.png" alt="Pet Card Detail View" width="500">
+  <p><em>Click on any pet to view details, edit info, or manage their profile - it's all just one click away</em></p>
+</div>
 
 ## Project Structure
 
 ```
 ML_FP_app - Final/
-├── README.md                    # Project documentation
 ├── requirements.txt             # Python dependencies
-├── backend.py                   # Main Flask server and ML backend
-├── PROJECT_STRUCTURE.md         # Detailed structure documentation
-│
+├── backend.py                   # Main Flask server and ML backend│
 ├── frontend/                    # Frontend files
 │   ├── local_app.html           # Main HTML application
 │   └── assets/                  # Frontend assets
@@ -91,26 +90,25 @@ ML_FP_app - Final/
 └── data/                        # Data and model files
     ├── clip_mlp_model.pt        # Trained PyTorch model
     └── pet_adoption_data.csv    # Pet data storage
-```
 ├── requirements.txt             # Python dependencies
 └── README.md                    # This file
 ```
 
----
-
 ## Setup Instructions
 
-### Frontend Only (Quick Start)
+Choose one of the following options to get started:
 
-1. **Open the Application**
-   - Simply open `local_app.html` in a web browser
-   - The dashboard will load by default showing any saved pets
-   - No server setup required for basic functionality
-   - The app will work with local storage and simulated predictions
+### A) Frontend Only (Quick Start)
 
-### Full Setup with Python Backend
+  **Open the App**
+   - Just open the file called `local_app.html` in your web browser
+   - You’ll see the dashboard with any pets you already saved
+   - No need to set up a server
+   - The app saves data in your browser and uses fake predictions for testing
 
-1. **Install Python Dependencies**
+### B) Full Setup with Python Backend
+
+1. **Install Python Packages**
    ```bash
    pip install -r requirements.txt
    ```
@@ -120,87 +118,82 @@ ML_FP_app - Final/
    python backend.py
    ```
 
-3. **Open the Frontend**
+3. **Open the App**
    - Open `local_app.html` in a web browser
-   - The frontend will automatically connect to the backend API
-
----
+   - The frontend will connect to the backend automatically
 
 ## Using the Application
 
 ### Adding a New Pet Profile
 
-1. **Basic Information** (Step 1)
-   - Select pet type (Dog/Cat)
-   - Enter name (optional)
-   - Enter age in months
-   - Set quantity (for litters)
-   - Set adoption fee
+**Step 1: Basic Information**  
+- Choose the pet type (Dog or Cat)  
+- Enter the pet's name (optional)  
+- Enter the pet's age in months  
+- Enter the number of pets if it’s a litter  
+- Set the adoption fee  
 
-2. **Physical Characteristics** (Step 2)
-   - Select breed from dropdown (options appear after selecting pet type in Step 1)
-   - Choose gender
-   - Select primary color
-   - Set expected size when fully grown
-   - Choose fur length
+**Step 2: Physical Characteristics**  
+- Pick the breed from a dropdown list (the list appears after choosing the pet type in Step 1)  
+- Choose the pet’s gender  
+- Select the main color  
+- Set the expected full-grown size  
+- Choose the fur length  
 
-3. **Health Information** (Step 3)
-   - Vaccination status
-   - Deworming status
-   - Sterilization status
-   - Overall health condition
+**Step 3: Health Information**  
+- Mark vaccination status  
+- Mark deworming status  
+- Mark sterilization status  
+- Describe the overall health condition  
 
-4. **Location** (Step 4)
-   - Select state
+**Step 4: Location**  
+- Choose the state where the pet is located  
 
-5. **Description** (Step 5)
-   - Enter detailed description of personality, habits, special needs
+**Step 5: Description**  
+- Write a detailed description of the pet’s personality, habits, or special needs  
 
-6. **Photos** (Step 6)
-   - Upload multiple pet photos
-   - Drag and drop or click to select
-   - Photos improve prediction accuracy
+**Step 6: Photos**  
+- Upload multiple photos of the pet  
+- You can drag and drop photos or click to select them  
+
+> [!NOTE]
+> Adding photos is recommended because it helps improve the system’s prediction accuracy.
 
 ### Viewing Predictions
 
-After completing the form:
-- Click "Ready to generate prediction!"
-- View the predicted adoption timeframe
-- See confidence level of the prediction
-- Save the pet profile to add to your database
+After you finish the form:  
+- Click the button "Ready to generate prediction!"  
+- See how long the system thinks it will take to adopt the pet  
+- Check how confident the system is in its prediction  
+- Save the pet profile to add it to your database  
 
 ### Dashboard
 
-View important statistics:
-- Total pets in system
-- Average prediction time
-- Number of fast adopters
-- Average confidence level
-- Recent pet profiles with their predictions
+See important information at a glance:  
+- Total number of pets in the system  
+- Average predicted adoption time  
+- Number of pets expected to be adopted quickly  
+- Average confidence level of all predictions  
+- Recent pet profiles along with their predictions 
 
 ## Data Management
 
 ### Data Fields
-The system collects and stores:
-- **Structured Data**: Type, breed, age, gender, color, size, fur length, health status, location, fees
-- **Textual Data**: Pet name, description
-- **Image Data**: Number of photos uploaded and photo URLs
-- **Predictions**: Adoption timeframe, confidence level, date added
-- **Metadata**: Unique pet ID, rescuer information, timestamps
+The system saves:
+- Basic info like type, breed, age, gender, color, size, fur length, health, location, and fees
+- Text info like pet name and description
+- Photos uploaded
+- Predictions: adoption time and confidence
+- Extra info: pet ID, rescuer info, and dates
 
 ### Prediction System
-- **Smart Scoring Algorithm**: Considers age, breed popularity, health status, and photos
-- **Dynamic Confidence Levels**: Higher confidence for pets with complete information
-- **Realistic Variations**: Adds random factors to prevent identical predictions
-- **Four-Tier Classification**: Fast (0-30 days), Moderate (31-90 days), Slow (100+ days)
-- **Visual Indicators**: Color-coded badges and progress indicators
+- Uses pet info like age, breed, health, and photos to make predictions
+- Gives higher confidence when info is complete
+- Groups pets by adoption speed: Fast (0-30 days), Medium (31-90 days), Slow (100+ days)
 
 ### CSV Export
-- Click "Export CSV" button in dashboard to download all pet data
-- Includes all pet information plus predictions in standardized format
-- Files are compatible with Excel and Google Sheets
-
----
+- Press "Export CSV" on the dashboard to download all pet data
+- The file includes all info and predictions
 
 ## Customization
 
@@ -208,10 +201,12 @@ The system collects and stores:
 Edit the `BREED_DATA` object in `data.js`:
 ```javascript
 const BREED_DATA = {
-    1: { // Dogs
+    // Dogs
+    1: { 
         999: "New Dog Breed"
     },
-    2: { // Cats  
+    // Cats
+    2: {   
         999: "New Cat Breed"
     }
 };
@@ -225,86 +220,38 @@ const COLOR_DATA = {
 };
 ```
 
-### Integrating Your ML Model
-
-1. **Replace the Prediction Logic**
-   - Update the `predict_adoption_time` method in `backend.py`
-   - Load your trained model using joblib or your preferred method
-   - Ensure feature vector matches your model's expected input
-
-2. **Update Feature Engineering**
-   - Modify the `create_feature_vector` method to match your model's features
-   - Update the `feature_columns` list with your model's expected features
-
----
-
-## Browser Compatibility
-
-- Chrome
-- Firefox
-- Safari
-- Edge
-
----
-
 ## Data Privacy
 
-- All data is stored locally in the browser by default
-- No data is sent to external servers unless you configure the backend
-- Photo uploads are processed locally
-- CSV exports contain only the data you input
-
----
+- All data is saved only in your browser by default  
+- No data is sent outside unless you use the backend  
+- Photo uploads stay on your device and are not sent anywhere  
+- CSV exports include only the data you entered  
 
 ## Road Map
 
-### ✅ Completed Features
-
-#### Core Application
-- [x] Multi-step form interface with 6 comprehensive steps
-- [x] Dashboard with real-time statistics and insights
-- [x] Interactive pet cards
-- [x] Photo upload system with drag-and-drop
-- [x] Local storage persistence for offline functionality
-
-#### Data Management
-- [x] CSV export functionality with "Export CSV" button
-- [x] Pet profile creation, editing, and deletion
-- [x] Prediction confidence scoring system
-
-#### User Interface
-- [x] Nice design with professional styling
-- [x] Progress indicators and step navigation
-- [x] View All/Show Recent toggle functionality
-
-### Future Enhancements
-
-#### Machine Learning Improvements
-- [ ] Real-time model updating based on adoption outcomes
-
-#### Feature Enhancements
-- [ ] Advanced search and filtering capabilities
-- [ ] Multi-language support for international use
-
-#### Data Analytics
-- [ ] Detailed analytics dashboard with charts and graphs
-- [ ] Adoption success rate tracking over time
-
-#### Performance Optimization
-- [ ] Optimize model for different regions beyond Malaysia
-
----
+- [x] Multi-step form with 6 steps  
+- [x] Dashboard with live stats and pet cards  
+- [x] Photo uploads with drag-and-drop  
+- [x] Save data locally  
+- [x] Export CSV  
+- [x] Create, edit, delete pet profiles  
+- [x] Prediction confidence scores  
+- [ ] Real-time model updates  
+- [ ] Advanced search and filters  
+- [ ] Support for multiple languages and currencies  
+- [ ] Analytics with charts  
+- [ ] Better model that supports for other pets and regions 
 
 ## Contributing
 
-To extend the application:
-1. Add new features to the appropriate files
-2. Update the README with new functionality
-3. Test across different browsers and devices
-4. Ensure responsive design is maintained
-
----
+To help improve the app:
+1. Add new features to the right files  
+2. Update the README with your changes  
+3. Test the app on different browsers and devices  
+4. Make sure the design works well on all screens  
 
 ## License
 
-This project is created for educational purposes. Please ensure compliance with local data protection regulations when handling pet and adopter information.
+>[!IMPORTANT]
+>This project is for learning only.
+>Please follow your local data privacy rules when using pet and adopter information.  
