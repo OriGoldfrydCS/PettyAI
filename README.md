@@ -255,4 +255,4 @@ To help improve the app:
 >[!IMPORTANT]
 >This project is for learning only.
 >Please follow your local data privacy rules when using pet and adopter information.
->See `MIT LICENSE`
+>See `MIT LICENSE`.
