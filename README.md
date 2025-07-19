@@ -1,6 +1,6 @@
 # PettyAI - Pet Adoption Prediction Application
 
-PettyAI is a web app designed for animal shelters. It predicts how quickly a pet will be adopted based on its features like age, health, and personality. It can help shelters make faster, better decisions for their animals.
+PettyAI is a web application designed for animal shelters. It predicts how quickly a pet will be adopted based on its features like age, health, and personality. It can help shelters make faster, better decisions for their animals.
 
 Finding forever homes for pets is not always easy. PettyAI simplifies this process using technology to help rescuers understand which pets are more likely to get adopted quickly, and which ones might need extra support or promotion.
 
