@@ -77,7 +77,7 @@ Explore how PettyAI makes pet management simple:
 ## Project Structure
 
 ```
-ML_FP_app - Final/
+PettyAI/
 ├── requirements.txt             # Python dependencies
 ├── backend.py                   # Main Flask server and ML backend│
 ├── frontend/                    # Frontend files
